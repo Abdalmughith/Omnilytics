@@ -38,14 +38,13 @@ app.get('/genrate', (req, res) => {
     let data = [];
     _.each(regListgen, reg => {
         let rand = _.random([lower = 0], [upper = 70000])
-        // let rand = _.random([lower = 1], [upper = 10])
-        console.log(reg, "   ", rand+1);
         for (let index = 0; index < rand; index++) {
             const randexp = new RandExp(new RegExp(reg));
             const genString = randexp.gen();
             data.push(genString)
         }
     })
+    data = _.shuffle(data);
     const fileName = new RandExp(new RegExp('[A-Za-z0-9]{5,25}')).gen() + ".txt";
     fs.writeFileSync("./public/" + fileName, data.join(','));
     res.json({
